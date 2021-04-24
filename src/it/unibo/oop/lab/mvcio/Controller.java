@@ -1,9 +1,46 @@
 package it.unibo.oop.lab.mvcio;
 
+import java.io.BufferedWriter;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.OutputStream;
 /**
  * 
  */
 public class Controller {
+    Controller contt;
+    File file = new File(System.getProperty("user.home")+File.separator+"test.txt");
+    private static String FILE_NAME="test.txt";
+    private final static String PATH = System.getProperty("user.home")
+            + System.getProperty("file.separator")
+            + Controller.class.getSimpleName()+ ".txt";
+            
+            
+            
+    void SetFile(String s) {
+        Controller.FILE_NAME=s;
+    }
+    
+    String GetFile() {
+        return Controller.FILE_NAME;
+    }
+    
+    String GetPath(File f) {
+        return f.getPath();
+    }
+    
+    void WriteOnFile(String s) throws IOException{
+        try(BufferedWriter w = new BufferedWriter(new FileWriter(this.file))
+           ){
+            w.write(s);
+        };
+        
+        
+    }
+    
 
     /*
      * This class must implement a simple controller responsible of I/O access. It

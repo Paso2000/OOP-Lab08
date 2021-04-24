@@ -1,16 +1,25 @@
 package it.unibo.oop.lab.mvc;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
 
 /**
  * A very simple program using a graphical interface.
  * 
  */
 public final class SimpleGUI {
-
     private final JFrame frame = new JFrame();
 
     /*
@@ -38,7 +47,56 @@ public final class SimpleGUI {
      * builds a new {@link SimpleGUI}.
      */
     public SimpleGUI() {
+        final ControllerImpl cont= new ControllerImpl();
+        final JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+        final JPanel panel1 = new JPanel();
+        panel1.setLayout(new FlowLayout());
+        final JTextField field = new JTextField();
+        final JTextArea area = new JTextArea();
+        final JButton b1 = new JButton("Print");
+        final JButton b2 = new JButton("Show History");
+        panel.add(field,BorderLayout.NORTH);
+        panel.add(area,BorderLayout.CENTER);
+        panel1.add(b1);
+        panel1.add(b2);
+        panel.add(panel1, BorderLayout.SOUTH);
+        frame.getContentPane().add(panel);
+         
+         
+         
+         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+         
+         b1.addActionListener(new ActionListener() {
 
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+               
+                cont.SetNextString(field.getText());
+               
+                    try {
+                        cont.PrintCurrent();
+                    } catch (IllegalArgumentException | IOException e) {
+                        System.out.println("error");
+                    }
+               
+            }
+             
+         });
+         
+         b2.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                    
+                   
+                        for(String s : cont.Hisotry()) {
+                         area.setText(cont.GetNextString());
+                        }
+                   
+            }
+             
+         });
         /*
          * Make the frame half the resolution of the screen. This very method is
          * enough for a single screen setup. In case of multiple monitors, the
@@ -59,7 +117,11 @@ public final class SimpleGUI {
          * flag makes the OS window manager take care of the default positioning
          * on screen. Results may vary, but it is generally the best choice.
          */
+        frame.setVisible(true);
         frame.setLocationByPlatform(true);
     }
+    public static void main(final String... args) {
+        new SimpleGUI();
+     }
 
 }

@@ -10,9 +10,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Random;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 /**
  * This class is a simple application that writes a random number on a file.
@@ -27,16 +29,20 @@ public class MiniGUI {
     private static final int PROPORTION = 5;
     private final Random rng = new Random();
     private final JFrame frame = new JFrame(TITLE);
-
+    private final JTextField result= new JTextField("result:",20);
     /**
      * 
      */
     public MiniGUI() {
-        final JPanel canvas = new JPanel();
-        canvas.setLayout(new BorderLayout());
+        frame.setLayout(new BorderLayout());
         final JButton write = new JButton("Print a random number on standard output");
-        canvas.add(write, BorderLayout.CENTER);
-        frame.setContentPane(canvas);
+        final JPanel p1 = new JPanel();
+        final JPanel canvas = new JPanel();
+        p1.setLayout(new BoxLayout(p1,BoxLayout.X_AXIS));
+        p1.add(write);
+        canvas.add(result);
+        frame.getContentPane().add(p1,BorderLayout.CENTER);
+        frame.getContentPane().add(canvas,BorderLayout.NORTH);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         /*
          * Handlers
@@ -44,12 +50,15 @@ public class MiniGUI {
         write.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent e) {
-                System.out.println(rng.nextInt());
+                int rand=rng.nextInt();
+                System.out.println(""+rand);
+                 result.setText("result:"+rand);
             }
-        });
+        }); 
     }
 
     private void display() {
+        
         /*
          * Make the frame one fifth the resolution of the screen. This very method is
          * enough for a single screen setup. In case of multiple monitors, the
